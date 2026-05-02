@@ -86,13 +86,14 @@ class Usuario {
         return $stmt->execute();
     }
 
-    public function emailExiste() {
+public function emailExiste() {
         $query = "SELECT id FROM {$this->tabla}
                   WHERE email = :email AND id != :id
                   LIMIT 1";
         $stmt = $this->conn->prepare($query);
+        $id = $this->id ?? 0;
         $stmt->bindParam(":email", $this->email);
-        $stmt->bindParam(":id",   $this->id ?? 0, PDO::PARAM_INT);
+        $stmt->bindParam(":id", $id, PDO::PARAM_INT);
         $stmt->execute();
         return $stmt->rowCount() > 0;
     }

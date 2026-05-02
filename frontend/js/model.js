@@ -1,5 +1,4 @@
-
-const API_URL = "http://localhost/crud-usuarios/backend/api/usuarios.php";
+const API_URL = "http://localhost/usuarios/backend/api/usuarios.php";
 
 const UsuarioModel = {
 
