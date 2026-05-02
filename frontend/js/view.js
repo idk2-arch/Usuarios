@@ -68,7 +68,7 @@ const UsuarioView = {
     this.btnGuardar.disabled = activo;
     this.btnGuardar.innerHTML = activo
       ? '<span class="spinner"></span>Guardando...'
-      : " Guardar";
+      : "💾 Guardar";
   },
 
   mostrarToast(mensaje, tipo = "success") {
@@ -89,7 +89,6 @@ const UsuarioView = {
     const btnConfirmar = document.getElementById("modal-confirmar");
     const btnCancelar  = document.getElementById("modal-cancelar");
 
-    // Clonar para limpiar listeners anteriores
     const nuevoConfirmar = btnConfirmar.cloneNode(true);
     const nuevoCancelar  = btnCancelar.cloneNode(true);
     btnConfirmar.replaceWith(nuevoConfirmar);
@@ -109,7 +108,6 @@ const UsuarioView = {
     document.getElementById("modal-overlay").style.display = "none";
   },
 
-  // ── Utilidades ─────────────────────────────────────────
   _escape(str) {
     return String(str)
       .replace(/&/g, "&amp;")
