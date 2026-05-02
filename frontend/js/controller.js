@@ -1,4 +1,3 @@
-
 const UsuarioController = {
 
   async init() {
@@ -81,19 +80,19 @@ const UsuarioController = {
     }
   },
 
-  async eliminarUsuario(id) {
+  eliminarUsuario(id) {
     const fila   = document.querySelector(`tr[data-id="${id}"]`);
     const nombre = fila?.querySelector("td")?.textContent || "este usuario";
 
-    if (!confirm(`¿Seguro que quieres eliminar a "${nombre}"?`)) return;
-
-    try {
-      await UsuarioModel.delete(id);
-      UsuarioView.mostrarToast("🗑️ Usuario eliminado.", "info");
-      await this.cargarUsuarios();
-    } catch (err) {
-      UsuarioView.mostrarToast("❌ " + err.message, "error");
-    }
+    UsuarioView.mostrarModal(nombre, async () => {
+      try {
+        await UsuarioModel.delete(id);
+        UsuarioView.mostrarToast("🗑️ Usuario eliminado.", "info");
+        await this.cargarUsuarios();
+      } catch (err) {
+        UsuarioView.mostrarToast("❌ " + err.message, "error");
+      }
+    });
   },
 };
 

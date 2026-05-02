@@ -69,7 +69,19 @@
       </div>
     </div>
 
-  </div><!-- /container -->
+  </div>
+
+  <div id="modal-overlay" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="modal-title" style="display:none">
+    <div class="modal">
+      <div class="modal-icon">🗑️</div>
+      <h2 class="modal-title" id="modal-title">Eliminar usuario</h2>
+      <p class="modal-msg" id="modal-msg">¿Seguro que quieres eliminar a este usuario? Esta acción no se puede deshacer.</p>
+      <div class="modal-actions">
+        <button class="btn-secondary" id="modal-cancelar">Cancelar</button>
+        <button class="btn-danger"    id="modal-confirmar">Sí, eliminar</button>
+      </div>
+    </div>
+  </div>
 
   <script src="js/model.js"></script>
   <script src="js/view.js"></script>
