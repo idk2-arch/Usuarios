@@ -1,4 +1,3 @@
-
 const UsuarioView = {
 
   tbody:       document.getElementById("tabla-body"),
@@ -69,7 +68,7 @@ const UsuarioView = {
     this.btnGuardar.disabled = activo;
     this.btnGuardar.innerHTML = activo
       ? '<span class="spinner"></span>Guardando...'
-      : "💾 Guardar";
+      : " Guardar";
   },
 
   mostrarToast(mensaje, tipo = "success") {
@@ -81,6 +80,36 @@ const UsuarioView = {
     }, 3200);
   },
 
+  mostrarModal(nombre, onConfirmar) {
+    const overlay = document.getElementById("modal-overlay");
+    document.getElementById("modal-msg").textContent =
+      `¿Seguro que quieres eliminar a "${nombre}"? Esta acción no se puede deshacer.`;
+    overlay.style.display = "flex";
+
+    const btnConfirmar = document.getElementById("modal-confirmar");
+    const btnCancelar  = document.getElementById("modal-cancelar");
+
+    // Clonar para limpiar listeners anteriores
+    const nuevoConfirmar = btnConfirmar.cloneNode(true);
+    const nuevoCancelar  = btnCancelar.cloneNode(true);
+    btnConfirmar.replaceWith(nuevoConfirmar);
+    btnCancelar.replaceWith(nuevoCancelar);
+
+    nuevoConfirmar.addEventListener("click", () => {
+      this.cerrarModal();
+      onConfirmar();
+    });
+    nuevoCancelar.addEventListener("click", () => this.cerrarModal());
+    overlay.addEventListener("click", (e) => {
+      if (e.target === overlay) this.cerrarModal();
+    }, { once: true });
+  },
+
+  cerrarModal() {
+    document.getElementById("modal-overlay").style.display = "none";
+  },
+
+  // ── Utilidades ─────────────────────────────────────────
   _escape(str) {
     return String(str)
       .replace(/&/g, "&amp;")

@@ -1,4 +1,3 @@
-
 const UsuarioController = {
 
   async init() {
@@ -11,7 +10,7 @@ const UsuarioController = {
       const usuarios = await UsuarioModel.getAll();
       UsuarioView.renderTabla(usuarios);
     } catch (err) {
-      UsuarioView.mostrarToast("❌ " + err.message, "error");
+      UsuarioView.mostrarToast( err.message, "error");
     }
   },
 
@@ -43,12 +42,12 @@ const UsuarioController = {
     const id    = document.getElementById("usuario-id").value;
 
     if (!datos.nombre) {
-      UsuarioView.mostrarToast("⚠️ El nombre es obligatorio.", "error");
+      UsuarioView.mostrarToast(" El nombre es obligatorio.", "error");
       UsuarioView.inputNombre.focus();
       return;
     }
     if (!datos.email || !datos.email.includes("@")) {
-      UsuarioView.mostrarToast("⚠️ Escribe un email válido.", "error");
+      UsuarioView.mostrarToast(" Escribe un email válido.", "error");
       UsuarioView.inputEmail.focus();
       return;
     }
@@ -57,15 +56,15 @@ const UsuarioController = {
     try {
       if (id) {
         await UsuarioModel.update(id, datos);
-        UsuarioView.mostrarToast("✅ Usuario actualizado correctamente.", "success");
+        UsuarioView.mostrarToast(" Usuario actualizado correctamente.", "success");
       } else {
         await UsuarioModel.create(datos);
-        UsuarioView.mostrarToast("✅ Usuario creado correctamente.", "success");
+        UsuarioView.mostrarToast("Usuario creado correctamente.", "success");
       }
       UsuarioView.resetFormulario();
       await this.cargarUsuarios();
     } catch (err) {
-      UsuarioView.mostrarToast("❌ " + err.message, "error");
+      UsuarioView.mostrarToast( err.message, "error");
     } finally {
       UsuarioView.setLoading(false);
     }
@@ -77,23 +76,23 @@ const UsuarioController = {
       UsuarioView.llenarFormulario(usuario);
       document.getElementById("form-card").scrollIntoView({ behavior: "smooth" });
     } catch (err) {
-      UsuarioView.mostrarToast("❌ " + err.message, "error");
+      UsuarioView.mostrarToast( err.message, "error");
     }
   },
 
-  async eliminarUsuario(id) {
+  eliminarUsuario(id) {
     const fila   = document.querySelector(`tr[data-id="${id}"]`);
     const nombre = fila?.querySelector("td")?.textContent || "este usuario";
 
-    if (!confirm(`¿Seguro que quieres eliminar a "${nombre}"?`)) return;
-
-    try {
-      await UsuarioModel.delete(id);
-      UsuarioView.mostrarToast("🗑️ Usuario eliminado.", "info");
-      await this.cargarUsuarios();
-    } catch (err) {
-      UsuarioView.mostrarToast("❌ " + err.message, "error");
-    }
+    UsuarioView.mostrarModal(nombre, async () => {
+      try {
+        await UsuarioModel.delete(id);
+        UsuarioView.mostrarToast(" Usuario eliminado.", "info");
+        await this.cargarUsuarios();
+      } catch (err) {
+        UsuarioView.mostrarToast( err.message, "error");
+      }
+    });
   },
 };
 

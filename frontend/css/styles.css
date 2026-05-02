@@ -259,3 +259,64 @@ tbody td {
   .form-group.full { grid-column: 1; }
   header h1 { font-size: 1.35rem; }
 }
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  animation: fadeIn .18s ease;
+}
+
+.modal {
+  background: var(--surface);
+  border-radius: 16px;
+  padding: 2rem 2.2rem 1.8rem;
+  max-width: 400px;
+  width: 90%;
+  text-align: center;
+  box-shadow: 0 20px 60px rgba(0,0,0,.25);
+  animation: slideUp .2s ease;
+}
+
+.modal-icon { font-size: 2.8rem; margin-bottom: .6rem; }
+
+.modal-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0 0 .5rem;
+}
+
+.modal-msg {
+  font-size: .95rem;
+  color: var(--text-secondary);
+  margin: 0 0 1.6rem;
+  line-height: 1.5;
+}
+
+.modal-actions {
+  display: flex;
+  gap: .8rem;
+  justify-content: center;
+}
+
+.btn-danger {
+  padding: .6rem 1.4rem;
+  border: none;
+  border-radius: 8px;
+  font-size: .95rem;
+  font-weight: 600;
+  cursor: pointer;
+  background: #ef4444;
+  color: #fff;
+  transition: background .2s;
+}
+
+.btn-danger:hover { background: #dc2626; }
+
+@keyframes fadeIn  { from { opacity: 0 } to { opacity: 1 } }
+@keyframes slideUp { from { transform: translateY(24px); opacity: 0 } to { transform: translateY(0); opacity: 1 } }
