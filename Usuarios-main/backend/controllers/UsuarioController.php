@@ -22,8 +22,6 @@ $data = json_decode(file_get_contents("php://input"));
 $metodo = $_SERVER["REQUEST_METHOD"];
 $id     = isset($_GET["id"]) ? (int)$_GET["id"] : null;
 
-error_log("Metodo: " . $metodo);
-
 switch ($metodo) {
 
     case "GET":
@@ -35,33 +33,27 @@ switch ($metodo) {
                     "nombre"    => $usuario->nombre,
                     "email"     => $usuario->email,
                     "telefono"  => $usuario->telefono,
-                    "fecha_creacion" => $usuario->fecha_creacion ?? null
                 ]);
             } else {
                 http_response_code(404);
                 echo json_encode(["mensaje" => "Usuario no encontrado."]);
             }
         } else {
-            $stmt  = $usuario->leerTodos();
-            $lista = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            $stmt    = $usuario->leerTodos();
+            $lista   = $stmt->fetchAll(PDO::FETCH_ASSOC);
             echo json_encode($lista);
         }
         break;
 
     case "POST":
-        if (
-            empty($data->nombre) ||
-            empty($data->email) ||
-            !filter_var($data->email, FILTER_VALIDATE_EMAIL)
-        ) {
+        if (empty($data->nombre) || empty($data->email)) {
             http_response_code(400);
-            echo json_encode(["mensaje" => "Nombre y email válidos son obligatorios."]);
+            echo json_encode(["mensaje" => "Nombre y email son obligatorios."]);
             break;
         }
-
-        $usuario->id       = 0;
-        $usuario->nombre   = $data->nombre;
-        $usuario->email    = $data->email;
+        $usuario->id      = 0;
+        $usuario->nombre  = $data->nombre;
+        $usuario->email   = $data->email;
         $usuario->telefono = $data->telefono ?? "";
 
         if ($usuario->emailExiste()) {
@@ -69,16 +61,9 @@ switch ($metodo) {
             echo json_encode(["mensaje" => "El email ya está registrado."]);
             break;
         }
-
         if ($usuario->crear()) {
             http_response_code(201);
-            echo json_encode([
-                "mensaje" => "Usuario creado correctamente.",
-                "usuario" => [
-                    "nombre" => $usuario->nombre,
-                    "email"  => $usuario->email
-                ]
-            ]);
+            echo json_encode(["mensaje" => "Usuario creado correctamente."]);
         } else {
             http_response_code(500);
             echo json_encode(["mensaje" => "No se pudo crear el usuario."]);
@@ -91,17 +76,11 @@ switch ($metodo) {
             echo json_encode(["mensaje" => "Se requiere el ID del usuario."]);
             break;
         }
-
-        if (
-            empty($data->nombre) ||
-            empty($data->email) ||
-            !filter_var($data->email, FILTER_VALIDATE_EMAIL)
-        ) {
+        if (empty($data->nombre) || empty($data->email)) {
             http_response_code(400);
-            echo json_encode(["mensaje" => "Nombre y email válidos son obligatorios."]);
+            echo json_encode(["mensaje" => "Nombre y email son obligatorios."]);
             break;
         }
-
         $usuario->id       = $id;
         $usuario->nombre   = $data->nombre;
         $usuario->email    = $data->email;
@@ -112,7 +91,6 @@ switch ($metodo) {
             echo json_encode(["mensaje" => "El email ya está en uso por otro usuario."]);
             break;
         }
-
         if ($usuario->actualizar()) {
             echo json_encode(["mensaje" => "Usuario actualizado correctamente."]);
         } else {
@@ -127,9 +105,7 @@ switch ($metodo) {
             echo json_encode(["mensaje" => "Se requiere el ID del usuario."]);
             break;
         }
-
         $usuario->id = $id;
-
         if ($usuario->eliminar()) {
             echo json_encode(["mensaje" => "Usuario eliminado correctamente."]);
         } else {
